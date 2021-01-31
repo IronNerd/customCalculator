@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="calc.css" type="text/css" media="all" />
+  <title>Simple Calculator</title>
+</head>
+<body>
+
+  <div id="lcd-frame">
+    <span id="lastOpDispl"></span>
+    <span id="lcd" value="">0</span>
+  </div>
+  
+  <div id="keys">
+    <input type="button" class="key" id="clear" value="C">
+    <input type="button" class="key" id="percentage" value="%">
+    <input type="button" class="key" id="change-sign" value="&#177;">
+    <input type="button" class="key" id="divide" value="&#247;">
+    <input type="button" class="key" id="key9" value="9">
+    <input type="button" class="key" id="key8" value="8">
+    <input type="button" class="key" id="key7" value="7">
+    <input type="button" class="key" id="multiply" value="&#215;">
+    <input type="button" class="key" id="key6" value="6">
+    <input type="button" class="key" id="key5" value="5">
+    <input type="button" class="key" id="key4" value="4">
+    <input type="button" class="key" id="minus" value="&#8722;">
+    <input type="button" class="key" id="key3" value="3">
+    <input type="button" class="key" id="key2" value="2">
+    <input type="button" class="key" id="key1" value="1">
+    <input type="button" class="key" id="sum" value="+">
+    <input type="button" class="key" id="key0" value="0">
+    <input type="button" class="key" id="dotKey" value="&middot;">
+    <input type="button" class="key" id="backspace" value="&#x232b;">
+    <input type="button" class="key" id="equal" value="=">
+  </div>
+  
+  <div id="debug">
+   <div class="top-clue" >
+    <p class="visual-top">
+     lastOp:
+     <span id="last-op-debug"></span>
+    </p>
+    <p class="visual-top">
+     LCD: 
+     <span id="lcd-debug"></span>
+    </p>
+   </div>
+ 
+   <div class="top-clue" >
+    <p class="visual-top">
+     inputBuffer: 
+     <span id="inpBufferDebug"></span>
+    </p>
+    <p class="visual-top">
+     mainAcc:  
+     <span id="mainAccDebug"></span>
+    </p>
+   </div>
+  
+   <p class="visual-clue">
+    sumAcc: <span id="sumAccDebug"></span>
+   </p>
+
+   <p class="visual-clue">
+    minusAcc: <span id="minusAccDebug"></span>
+   </p>
+ 
+   <p class="visual-clue">
+    multAcc: <span id="multAccDebug"></span>
+   </p>
+ 
+   <p class="visual-clue">
+    divAcc: <span id="divAccDebug"></span>
+   </p>
+
+  <p class="visual-clue">
+   percentAcc: <span id="prcntAccDebug"></span>
+  </p>
+
+  </div>
+<div id= "notification-area">
+  <span id= "notification"></span>
+</div>
+<input type="button" name="debug" id="test" value="TEST" />
+
+  <script type="text/javascript" charset="utf-8" src="calc2.js"></script>
+</body>
+</html>
