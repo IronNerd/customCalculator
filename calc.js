@@ -378,7 +378,6 @@ function test(){
 // Pressing '=' after entering any number results in the same number.
 // Divide by zero is "infinity"
 
-
 // Next features:
 // Notification of forbidden operations 
 // Press any operator key to use result as first operator of the operation 
