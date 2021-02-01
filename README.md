@@ -23,18 +23,14 @@ Features already implemented:
 
 ° Display of last operator that was entered
 
-° Notification and solution to consecutive and repeated operators
+° Notification of, and solution, to consecutive and repeated operators
 
+° After obtaining a final result, press any operator key to use that result as first operand of next calculation. 
 
 NOW:
 ° Implement nums w/ decimal points
 
-
 NEXT:
-° Multiple operations before '='
-
-° Press any operator key to use result as first operator of the operation
-
-° Use final result (after pressing '=') as first number of next calc. Allowing modifications of the number. Namely, only change sign
+° Multiple operations before '='° Use final result (after pressing '=') as first number of next calc. Allowing modifications of the number. Namely, only change sign
 
 ° Memorize number on display and recall for subsequent operations
