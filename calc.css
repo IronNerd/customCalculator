@@ -105,13 +105,16 @@ outline: 1px solid yellow ;
 display: block;
 width: 99%;
 height: 12vw;
-margin: 0 auto;
+margin: 2vw auto;
 text-align: center;
 }
 
  #notification{
- color: magenta;
- font-weight: lighter;
- font-size: 8vw;
+ color: white ;
+ font-weight: normal;
+ font-size: 3.5vw;
  }
-
+ 
+ #test{
+   margin:1vw;
+ }
