@@ -30,6 +30,8 @@ Features already implemented:
 
 🔹Continuous display of last operator that was entered. 
 
+🔹Notification area to inform users about erroneous key presses. 
+
 NOW:
 
 🔹Implement numbers w/ decimal points
