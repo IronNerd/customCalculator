@@ -24,9 +24,9 @@ Features already implemented:
 
 🔹 After obtaining a final result, press any operator key to use that result as first operand of next calculation. 
 
-🔹After pressing '=', if desired, edit resulting number (change sign, backspace, add  digits), to use it as the first number of next calculation, or Use  result  as is as the first number of next calculation. 
+🔹After pressing '=', optionally press "=" again to enter &#x267d; recycle mode. This permits editing resulting number. Change sign, backspace digits, and add digits. Press next operator to exit recycle mode and use edited number as the first number of next calculation. If you do not press "=" twice, you may use the result as is as the first number of next calculation. You may also just enter a new number altogether for the next calculation. No need to press "Clear"
 
-🔹Display of last operator that was entered 
+🔹Continuous display of last operator that was entered. 
 
 NOW:
 
