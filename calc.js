@@ -465,6 +465,8 @@ Features already implemented:
 
 🔹Complete clear function at any point in time. 
 
+🔹A dedicated button to change sign +/-.
+
 🔹So far only integer numbers input.
 
 🔹Backspace for any number being input at any point in time
@@ -483,9 +485,11 @@ Features already implemented:
 
 🔹 After obtaining a final result, press any operator key to use that result as first operand of next calculation. 
 
-🔹After pressing '=', if desired, edit resulting number (change sign, backspace, add  digits), to use it as the first number of next calculation, or Use  result  as is as the first number of next calculation. 
+🔹After pressing '=', optionally press "=" again to enter &#x267d; recycle mode. This permits editing resulting number. Change sign, backspace digits, and add digits. Press next operator to exit recycle mode and use edited number as the first number of next calculation. If you do not press "=" twice, you may use the result as is as the first number of next calculation. You may also just enter a new number altogether for the next calculation. No need to press "Clear"
 
-🔹Display of last operator that was entered 
+🔹Continuous display of last operator that was entered. 
+
+🔹Notification area to inform users about erroneous key presses. 
 
 NOW:
 
@@ -502,5 +506,6 @@ NEXT:
 🔹calc history visibility of the sequence of all numbers and operator keys for the last 5 calculation
 🔹Paste into the calculator any number cut or copied from any other app
 🔹share a number from any other app to the calculator
-🔹copy results from the calculator to paste somewhere else. 
+🔹copy results from the calculator to paste somewhere else
+
 */
