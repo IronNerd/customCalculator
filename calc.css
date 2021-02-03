@@ -48,7 +48,13 @@ position: absolute;
  text-align: center;
  line-height: 150%;
  margin: 0.1vw 0.5vw;
- 
+}
+
+#test{
+width: fit-content;
+height: fit-content;
+font-size: 1em;
+padding: 0.2em;
 }
 
 #keys{
