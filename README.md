@@ -6,6 +6,8 @@ Features already implemented:
 
 🔹Complete clear function at any point in time. 
 
+🔹A dedicated button to change sign +/-.
+
 🔹So far only integer numbers input.
 
 🔹Backspace for any number being input at any point in time
