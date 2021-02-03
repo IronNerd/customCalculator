@@ -73,7 +73,7 @@ minusKey.addEventListener('click', ()=>{ minusFlag=true;operatorsRouter();});
 multiplyKey.addEventListener('click', ()=>{ multiplyFlag=true;operatorsRouter();}); 
 divideKey.addEventListener('click', ()=>{ divideFlag=true;operatorsRouter();});
 equalKey.addEventListener('click', ()=>{equalFlag=true;equal();});
-percentageKey.addEventListener('click', ()=>{ percentageFlag=true;operatorsRouter();}); 
+percentageKey.addEventListener('click', ()=>{percentageFlag=true;operatorsRouter();}); 
 dotKey.addEventListener('click', ()=>{currentNumberKey=0.0; dotFlag=true;operatorsRouter();});
 changeSignKey.addEventListener('click', changeSignRouter); 
 backspaceKey.addEventListener('click', backspaceRouter); 
@@ -87,7 +87,7 @@ const lcd=document.querySelector('#lcd');
 const notif = document.querySelector ('#notification');
 const alertColor=document.querySelector ('#notification-area').style;
 
-function operatorsRouter(){
+function operatorsRouter (){
 // If an operator key is pressed after obtaining a final result (after pressing "="), use Final Result as 1st number of next calculation. 
 if(mainAccum===null){
 dupOpFilter();
@@ -123,7 +123,10 @@ else if(percentageFlag){
    percentage();}
 else if(dotFlag){
    dotFlag=false;
-   dot();}   
+   dot();}
+else if(equalFlag){
+equalFlag=false;
+equal();}
  else{}
   }
   if(aDotIsOutstanding){
@@ -272,11 +275,19 @@ updDebug();
 percentAccum = 0;
   inputBuffer = null;
   lcd.innerHTML = mainAccum;
-currentOpKey = "%";
+currentOpKey = "=";
 lastOpDispl.innerHTML = currentOpKey;
 updDebug();
 }else if(currentOpKey==="&middot;") {
 //NOP
+}else if(currentOpKey==="=") {
+preservedNumberKey = mainAccum;
+clear();
+currentNumberKey = preservedNumberKey;
+numKeyHandler();
+currentOpKey = "♽";
+lastOpDispl.innerHTML = currentOpKey;
+updDebug();
 }else{
 // next test...;
 }
