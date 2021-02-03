@@ -1,3 +1,4 @@
+CUSTOM CALCULATOR
 A calculator that calculates like people do.
 
 Features already implemented:
@@ -27,9 +28,11 @@ Features already implemented:
 Display of last operator that was entered 
 
 NOW:
+
 🔹Implement numbers w/ decimal points
 
 NEXT:
+
 🔹Multiple operations before '='
 🔹Memorize number on display and recall for subsequent operations
 🔹preserve state of the calculator at quit time, and restore state when restarting the calculator
