@@ -26,8 +26,6 @@ Features already implemented:
 
 🔹After pressing '=', if desired, edit resulting number (change sign, backspace, add  digits), to use it as the first number of next calculation, or Use  result  as is as the first number of next calculation. 
 
-NEXT:
-
 🔹Display of last operator that was entered 
 
 NOW:
