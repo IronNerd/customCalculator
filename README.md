@@ -1,35 +1,42 @@
-Custom Calculator:
 A calculator that calculates like people do.
 
 Features already implemented:
 
-° Complete clear function at any point in time. 
+🔹Complete clear function at any point in time. 
 
-° So far only integer numbers input.
+🔹So far only integer numbers input.
 
-° Backspace for any number being input at any point in time
+🔹Backspace for any number being input at any point in time
 
-° Change sign for any input number at any point in time
+🔹Change sign for any input number at any point in time
 
-° +, -, x, /, % for any mixture of positive and negative numbers
+🔹+, -, x, /, % for any mixture of positive and negative numbers
 
-° After pressing '=' to obtain final result, no need to clear. Just enter first number to start next calc.
+🔹After pressing '=' to obtain final result, no need to clear. Just enter first number to start next calc.
 
-° Pressing '=' after entering any number results in the same number.
+🔹Pressing '=' after entering the first number of a new calculation, totalized to the same number.
 
-° Divide by zero is "infinity"
+🔹Divide by zero is "infinity"
 
-° No action upon consecutive and repeated operators, but: Notification of, and solution, to consecutive and repeated operators.
+🔹No action upon consecutive and repeated operators, but: Notification of, and solution, to consecutive and repeated operators.
 
-° Display of last operator that was entered.
+🔹 After obtaining a final result, press any operator key to use that result as first operand of next calculation. 
 
-°  After obtaining a final result, press any operator key to use that result as first operand of next calculation. 
+🔹After pressing '=', if desired, edit resulting number (change sign, backspace, add  digits), to use it as the first number of next calculation, or Use  result  as is as the first number of next calculation. 
 
-° Use final result (after pressing '=') as first number of next calc. Allowing entire modifications of the number. Namely, sign change, backspace, and/or addition of digits. 
+Display of last operator that was entered 
 
 NOW:
-° Implement nums w/ decimal points
+🔹Implement numbers w/ decimal points
 
 NEXT:
-° Multiple operations before '='
-° Memorize number on display and recall for subsequent operations
+🔹Multiple operations before '='
+🔹Memorize number on display and recall for subsequent operations
+🔹preserve state of the calculator at quit time, and restore state when restarting the calculator
+🔹Toggle operations (to correct mistaken entries of operations)
+🔹highlighted the key of the last operator key that was entered
+🔹Visibility of the sequence of all numbers and operator keys for the current calculation
+🔹calc history visibility of the sequence of all numbers and operator keys for the last 5 calculation
+🔹Paste into the calculator any number cut or copied from any other app
+🔹share a number from any other app to the calculator
+🔹copy results from the calculator to paste somewhere else
