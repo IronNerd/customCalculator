@@ -35,7 +35,7 @@ position: absolute;
   left:2vw;
 }
 
-.key{
+.key, #test{
  display: block;
  width: 24vw;
  height: 18vw;
