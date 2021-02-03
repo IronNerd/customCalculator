@@ -65,13 +65,14 @@ let divideFlag=false;
 let percentageFlag=false;
 let dotFlag =false;
 let equalFlag=false;
+let recycleFlag=false;
 
 // Operations event listeners 
 sumKey.addEventListener('click', ()=>{ sumFlag=true;operatorsRouter();}); 
 minusKey.addEventListener('click', ()=>{ minusFlag=true;operatorsRouter();}); 
 multiplyKey.addEventListener('click', ()=>{ multiplyFlag=true;operatorsRouter();}); 
 divideKey.addEventListener('click', ()=>{ divideFlag=true;operatorsRouter();});
-equalKey.addEventListener('click',  ()=>{equalFlag=true;equal();});
+equalKey.addEventListener('click', ()=>{equalFlag=true;equal();});
 percentageKey.addEventListener('click', ()=>{ percentageFlag=true;operatorsRouter();}); 
 dotKey.addEventListener('click', ()=>{currentNumberKey=0.0; dotFlag=true;operatorsRouter();});
 changeSignKey.addEventListener('click', changeSignRouter); 
@@ -86,11 +87,8 @@ const lcd=document.querySelector('#lcd');
 const notif = document.querySelector ('#notification');
 const alertColor=document.querySelector ('#notification-area').style;
 
-
-
-// ***** NEW FEATURE UNDER TEST *****
 function operatorsRouter(){
-// If an operator key is pressed after obtaining a final result ( pressing "="), use Final Result as 1st number of next calculation. 
+// If an operator key is pressed after obtaining a final result (after pressing "="), use Final Result as 1st number of next calculation. 
 if(mainAccum===null){
 dupOpFilter();
 }else{
@@ -136,31 +134,36 @@ else if(dotFlag){
   }
 }
  
-// Channel numbers proceeding from the keyboard
+// Handle numbers proceeding from the keyboard
 function numKeyHandler(){
 // clear error alert
 alertColor.backgroundColor='transparent';
 notif.innerHTML = '';
-  if(currentOpKey==='='){// '=' signals end of calc. A numeric key is expected afterwards. Arrival of numeric key must clear previous result on LCD in preparation for a new calculation.
-    preservedNumberKey=currentNumberKey;// Preserve currentNumberKey
-    clear();
-    currentNumberKey=preservedNumberKey; // Restore previous currentNumberKey
-    inputBuffer = inputBuffer*10+currentNumberKey;
+if(currentOpKey==='='){
+// '=' signals end of calc. A numeric key is expected afterwards. Arrival of numeric key must clear previous result on LCD in preparation for a new calculation.
+ preservedNumberKey=currentNumberKey;// Preserve currentNumberKey
+ clear();
+ currentNumberKey=preservedNumberKey;
+ // Restore previous currentNumberKey
+ inputBuffer = inputBuffer*10+currentNumberKey;
 lcd.innerHTML = inputBuffer;
 updDebug();
 }else if(currentNumberKey===0 && inputBuffer===0){
-  // NOP. We don't want zeroes on the left hand side of our numbers
+// NOP. We don't want zeroes on the left hand side of our numbers
 updDebug();
-}else if(inputBuffer<0){ // we are appending digits to an existing negative number on LCD. Since this is a number (not a sring) we requite a special mathematical procedure to achieve "appendage" to the existing negative number on LCD. 
+}else if(inputBuffer<0){
+// we are appending digits to an existing negative number on LCD. Since this is a number (not a sring) we requite a special mathematical procedure to achieve "appendage" to the existing negative number on LCD. 
 changeSign();
 inputBuffer = inputBuffer*10+currentNumberKey;
 changeSign();
 lcd.innerHTML = inputBuffer;
 updDebug();
-}else if(currentOpKey==='&middot;'){// add digit to the right
+}else if(currentOpKey==='&middot;'){
+// add digit to the right
  inputBuffer = inputBuffer + currentNumberKey / 10;
 lcd.innerHTML = inputBuffer;
- currentOpKey=preservedOpKey; // Restore previous currentOpKey
+ currentOpKey=preservedOpKey;
+ // Restore previous currentOpKey
 updDebug();
 } else {
 inputBuffer = inputBuffer*10+currentNumberKey;
@@ -171,7 +174,6 @@ updDebug();
 
 // Calculations
 function sum (){
-console.log("iam sum. ", "inputBuffer: ", inputBuffer);
 additionAccum = inputBuffer;
 lcd.innerHTML =additionAccum;
 inputBuffer = null;
@@ -231,21 +233,6 @@ function dot(){
   lcd.innerHTML = lcd.innerHTML.concat('.');
 return;
 } 
-  
-    /*if(currentOpKey==='='){
-// NOP 
-  }else{
-inputBuffer = inputBuffer*(1);
-lcd.innerHTML = inputBuffer.toString().concat('.');
-preservedOpKey = currentOpKey;// Preserve currentOpKey
-currentOpKey='&middot;'; // Dot entity code 
-lastOpDispl.innerHTML = currentOpKey;
-updDebug();
-// currentOpKey=preservedOpKey; // Restore previous currentOpKey
-}
-aDotIsOutstanding=true;
-return;
-} */
 
 function equal (){
 if(currentOpKey==="+" || currentOpKey=== 'C') {
@@ -289,19 +276,43 @@ currentOpKey = "%";
 lastOpDispl.innerHTML = currentOpKey;
 updDebug();
 }else if(currentOpKey==="&middot;") {
-  /*divisionAccum = divisionAccum + currentNumberKey;
-  inputBuffer = 10;
-  divide();
-currentOpKey = null;
-lastOpDispl.innerHTML = currentOpKey;
-updDebug();*/
+//NOP
 }else{
-  // next test... &#215;
+// next test...;
 }
 anOpIsOutstanding=false;
 aDotIsOutstanding=false;
 return;
 } 
+
+// FUNCTION IS NOT USED:
+/*function dupEqualFilter(){
+ if(false){
+ //equalKey.setAttribute('value', '♽');
+//lastOpDispl.innerHTML='♽';
+changeSignRouter();
+changeSignRouter();
+lastOpDispl.innerHTML='♽';
+ }else{
+ equal();
+ }
+} */
+
+function equalRouter(){
+if (currentOpKey === '=') {
+equalKey.setAttribute('value', '♽');
+lastOpDispl.innerHTML='♽';
+console.log('if 2');
+return;
+}else if(lastOpDispl.innerHTML === '♽') {
+equalKey.setAttribute('value', '=');
+currentOpKey='=';
+lastOpDispl.innerHTML = '=';
+console.log('else');
+}else{
+  equal();
+}
+}
 
 function changeSignRouter(){
 if (mainAccum ===null) {
@@ -316,7 +327,8 @@ changeSign();
 }
 
 function changeSign (){
-  if(currentOpKey==='='){// Changing sign after final result implies that after switching the sign of the final result, we intent to use the negated number as the first number for starting a new calculation.
+if(currentOpKey==='='){
+// Changing sign after final result implies that after switching the sign of the final result, we intent to use the negated number as the first number for starting a new calculation.
 additionAccum = lcd.innerHTML*(-1);
 inputBuffer = 0;
 lcd.innerHTML =lcd.innerHTML*(-1);
@@ -335,11 +347,13 @@ updDebug();
 currentOpKey=preservedOpKey; // Restore previous currentOpKey
 } 
 return;
-} 
+}
 
 function backspaceRouter (){
 if (mainAccum ===null) {
-backspace();
+changeSignRouter();
+changeSignRouter();
+backspace ();
 }else{
 preservedNumberKey = mainAccum;
 clear();
@@ -347,17 +361,16 @@ currentNumberKey = preservedNumberKey;
 numKeyHandler();
 backspace();
 }
-} 
-  
+}
 
 function backspace (){
-  if(inputBuffer===0){
-  // nop
-  currentOpKey='&#x232b'; // backspace key
+if(inputBuffer===0){
+// nop
+currentOpKey='&#x232b'; // backspace key
 lastOpDispl.innerHTML = currentOpKey;
-  updDebug();
-  }else if(inputBuffer<0) {
-  inputBuffer = inputBuffer*(-1);
+updDebug();
+}else if(inputBuffer<0) {
+inputBuffer = inputBuffer*(-1);
 inputBuffer = Math.floor(inputBuffer/10);
 inputBuffer=inputBuffer*(-1);
 lcd.innerHTML = inputBuffer;
@@ -368,12 +381,12 @@ lastOpDispl.innerHTML = currentOpKey;
 currentOpKey=preservedOpKey; // Restore previous currentOpKey
 } else{ // inputBuffer >=0
 inputBuffer = Math.floor(inputBuffer/10);
-  lcd.innerHTML = inputBuffer;
-  preservedOpKey = currentOpKey;// Preserve currentOpKey
+lcd.innerHTML = inputBuffer;
+preservedOpKey = currentOpKey;// Preserve currentOpKey
 currentOpKey='&#x232b';// lastOp is backspace 
 lastOpDispl.innerHTML = currentOpKey;
-  updDebug();
-  currentOpKey=preservedOpKey; // Restore previous currentOpKey
+updDebug();
+currentOpKey=preservedOpKey; // Restore previous currentOpKey
 }
   }
   
@@ -392,8 +405,8 @@ const dotAccDebug = document.querySelector('#dotAccDebug');
 
 function clear (){
  inputBuffer=0;
-additionAccum=0;
-substractionAccum=0;
+ additionAccum=0;
+ substractionAccum=0;
  multiplicationAccum=0;
  divisionAccum=0;
  percentAccum=0;
@@ -407,6 +420,7 @@ substractionAccum=0;
  anOpIsOutstanding=false;
  aDotIsOutstanding=false;
  alertColor.backgroundColor='transparent';
+ // equalKey.setAttribute('value', '=');
 // debug items:
 updDebug();
 } 
@@ -425,56 +439,57 @@ dotAccDebug.innerHTML = dotAccum;
 } 
 
 // ***** TEST *****
-function recycleFinalResult(){
-if(!isNaN(mainAccum)){
-  // Preserve value
-const mainAccToRecycle = mainAccum;
-clear();
-inputBuffer = mainAccToRecycle;
-//mainAccum = null;
-lcd.innerHTML = mainAccToRecycle;
-console.log('New feature tested!');
-updDebug();
-}else{
-//NOP
-}
-return;
-}
 
 function test(){
-  if(!isNaN(mainAccum)){
-// '=' signals end of calc. A numeric key is expected afterwards. Arrival of numeric key must clear previous result on LCD in preparation for a new calculation.
-preservedNumberKey=mainAccum ;// Preserve currentNumberKey
-clear();
-currentNumberKey=preservedNumberKey; // Restore previous currentNumberKey
-inputBuffer = currentNumberKey;
-lcd.innerHTML = inputBuffer;
-updDebug();
-}
-
-
 }
 const testBtn = document.querySelector('#test');
 testBtn.addEventListener('click', test);
 
-// Features already implemented:
-// clear function
-// So far only integer numbers input
-// Backspace for any number being input at any point in time
-// Change sign for any number being input at any point in time
-// +, -, x, /, % for any mixture of positive and negative numbers
-// After pressing '=' to obtain final result, no need to clear. Just enter first number to start next calc. 
-// Pressing '=' after entering any number finalizes the calculation, resulting in the same number.
-// Divide by zero is "infinity"
-// No action for consecutive and repeated operators 
-// Display of last operator that was entered 
-// Notification of consecutive and repeated operators 
-// After obtaining a final result, press any operator key to use that result as first operand of next calculation. 
-// Use final result (after pressing '=') as first number of next calc. Allowing modifications of the number. Namely, only change sign
+/*
+CUSTOM CALCULATOR
 
-//NOW:
-// Implement nums w/ decimal points
+A calculator that calculates like people do.
 
-// Next features:
-// Multiple operations before '='
-// Memorize number on display and recall for subsequent operations 
+Features already implemented:
+
+🔹Complete clear function at any point in time. 
+
+🔹So far only integer numbers input.
+
+🔹Backspace for any number being input at any point in time
+
+🔹Change sign for any input number at any point in time
+
+🔹+, -, x, /, % for any mixture of positive and negative numbers
+
+🔹After pressing '=' to obtain final result, no need to clear. Just enter first number to start next calc.
+
+🔹Pressing '=' after entering the first number of a new calculation, totalized to the same number.
+
+🔹Divide by zero is "infinity"
+
+🔹No action upon consecutive and repeated operators, but: Notification of, and solution, to consecutive and repeated operators.
+
+🔹 After obtaining a final result, press any operator key to use that result as first operand of next calculation. 
+
+🔹After pressing '=', if desired, edit resulting number (change sign, backspace, add  digits), to use it as the first number of next calculation, or Use  result  as is as the first number of next calculation. 
+
+🔹Display of last operator that was entered 
+
+NOW:
+
+🔹Implement numbers w/ decimal points
+
+NEXT:
+
+🔹Multiple operations before '='
+🔹Memorize number on display and recall for subsequent operations
+🔹preserve state of the calculator at quit time, and restore state when restarting the calculator
+🔹Toggle operations (to correct mistaken entries of operations)
+🔹highlighted the key of the last operator key that was entered
+🔹Visibility of the sequence of all numbers and operator keys for the current calculation
+🔹calc history visibility of the sequence of all numbers and operator keys for the last 5 calculation
+🔹Paste into the calculator any number cut or copied from any other app
+🔹share a number from any other app to the calculator
+🔹copy results from the calculator to paste somewhere else. 
+*/
