@@ -1,0 +1,20 @@
+calc main deferred operating mode:
+All math operations (+ - * / % 1/x Sqrt **) are binary, meaning that any of the operators operate on two numbers to yield a result. In the calc app's context these binay operators are referred as regular operators.
+The +/-, backspace and dot operators are not considered regular because they are unary. Because they are unary, they are acted upon immediately upon key press in instant mode like fashion. Read below for further details of instant mode.
+
+Deferred, as opposed to "instant" means that calc expects user to enter a first number, any operator, a second number, and finally an equal operator, to generate a result. In other words, for every calculation, it deferrs the calculation until the equal operator is entered.
+Rules:
+1. Upon calc launch, any operator received without a prior number entry is ignored. 
+2. This also is applicable to +/- and backspace unary operators, wich are not regular because they are not binary.
+2. Upon calc launch, and at any point in time, a dot key press is acted upon immediately as dictated by the dotHandler subroutine.
+3. A first number key press and all subsequent number key presses are acted upon;
+ a) As dictated by the Append Subroutine.
+ b) Output of Append Subroutine will show on LCD.
+ c) Same output will be kept in the inputBuffer working register.
+ d) A flag will be set to broadcast the pregnant status of the  inputBuffer working register.
+4. 
+For instant mode, every operator is acted upon immediately. However, the resulting number is treated as a subtotal. A final result is obtained once the equal operator is entered. However, since all operators are binary, if a first operator is entered before entering a first number, in order to act upon this first operator immediately, a zero first number is assumed.
+
+Mixed operating mode is also possible. In this mode, calc switches modes automatically to suit the stream of operators entered. In mixed operation, deferred mode is assumed upon launch of calc, or after every equal operator entry. However instant mode is activated if user enters two consecutive operators (two operators with no numbers inbetween). From that point on, all operators are acted upon immediately upon operator entry. The mixed mode exits with arrival of next equal operator.
+
+The user can choose a preferred operating mode from the settings. If not set, the default preferred mode will be deferred.
