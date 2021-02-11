@@ -12,7 +12,6 @@ let currentOpKey=null;
 let preservedOpKey=null;
 let keyPressed;
 let anOpIsOutstanding=false;
-let aDotIsOutstanding=false;
 let inputBuffer=0; // This is the source register for numeric values. All other numeric values feed from it. 
 let additionAccum=0;
 let substractionAccum=0;
@@ -79,11 +78,11 @@ divideKey.addEventListener('click', ()=>{ divideFlag=true;keyPressed=NaN;dotHand
 percentageKey.addEventListener('click', ()=>{percentageFlag=true;keyPressed=NaN;dotHandler();operatorsRouter();});
 
 clearKey.addEventListener('click', () =>{clearFlag=true;keyPressed=NaN;dotHandler();clear();});
-changeSignKey.addEventListener('click', ()=>{changeSignFlag=true;keyPressed=NaN;dotHandler() ;changeSignRouter();}); 
-backspaceKey.addEventListener('click', ()=>{backspaceFlag=true;keyPressed=NaN;dotHandler() ;backspaceRouter();}); 
+changeSignKey.addEventListener('click', ()=>{changeSignFlag=true;keyPressed=NaN;dotHandler();changeSignRouter();}); 
+backspaceKey.addEventListener('click', ()=>{backspaceFlag=true;keyPressed=NaN;dotHandler();backspaceRouter();}); 
 equalKey.addEventListener('click', ()=>{equalFlag=true;keyPressed=NaN;dotHandler();equal();});
 dotKey.addEventListener('click', ()=>{currentNumberKey='.';dotFlag=true;dotHandler();
-// operatorsRouter();
+//operatorsRouter();
 });
 // To display on LCD the last operator
 const lastOpDispl = document.querySelector('#lastOpDispl');
@@ -94,7 +93,7 @@ const notif = document.querySelector ('#notification');
 const alertColor=document.querySelector ('#notification-area').style;
 
 let dotOutstanding=false;
-let rightDigitsCnt;
+let rightDigitsCnt=0;
 
 function dotHandler (){
 //1
@@ -136,10 +135,10 @@ return;}
 console.log('if 4 ', 'changeSignFlag: ', changeSignFlag, 'backspaceFlag: ', backspaceFlag);
 if(!changeSignFlag &&!backspaceFlag){//4y was key the press an operator?
 // note: operatorsRouter() will call the pertinent operator procedure. The procedure will take into account the rightDigitsCnt resulting from the dotHandler.
-operatorsRouter();//7y 7n
+/*operatorsRouter();//7y 7n
 rightDigitsCnt = 0;
 dotOutstanding = false;
-dotFlag = false;
+dotFlag = false;*/
 return;
 }else{
 //6 is the else of 4
@@ -169,7 +168,9 @@ dotOutstanding = false;
 dotFlag = false;
 return;
 }else{// else of 0
-rightDigitsCnt--;dotFlag=false;return;}
+rightDigitsCnt=rightDigitsCnt-1;dotFlag=false;
+console.log('rightDigitsCnt: ', rightDigitsCnt);
+return;}
 }else{//else of 9:
 dotFlag=false;
 return;}
@@ -183,19 +184,27 @@ return;
 } 
 } 
 
+function dotSensor (){
+rightDigitsCnt = 0;
+dotOutstanding = false;
+dotFlag = false;
+return;} 
+
+
 function operatorsRouter (){
 // If an operator key is pressed after obtaining a final result (after pressing "="), use Final Result as 1st number of next calculation. 
-if(mainAccum===null){
+if(mainAccum===null){//no final result
 dupOpFilter();
-}else{
+}else{// yes final result
 currentNumberKey=mainAccum;
 numKeyHandler();
 dupOpFilter();
   }
-return; 
+dotSensor();
+return;
 }
 
-function dupOpFilter(){
+function dupOpFilter (){
  if(anOpIsOutstanding){
     // reject operation
  alertColor.backgroundColor='darkred';
@@ -225,12 +234,7 @@ equalFlag=false;
 equal();}
  else{}
   }
-/*  if(aDotIsOutstanding){
-    // reject operation
-  }else{
-//dotFlag=false;
-    //dot();
-  }*/
+  //nop
 }
  
 // Handle numbers proceeding from the keyboard
@@ -245,7 +249,8 @@ if(currentOpKey==='='){
  currentNumberKey=preservedNumberKey;
  // Restore previous currentNumberKey
  inputBuffer = inputBuffer*10+currentNumberKey;
-lcd.innerHTML = inputBuffer;
+//lcd.innerHTML = inputBuffer;
+lcd.innerHTML = lcd.innerHTML.concat(inputBuffer);
 updDebug();
 }else if(currentNumberKey===0 && inputBuffer===0){
 // NOP. We don't want zeroes on the left hand side of our numbers
@@ -267,7 +272,6 @@ updDebug();*/
 } else {
 inputBuffer = inputBuffer*10+currentNumberKey;
 //lcd.innerHTML = inputBuffer;
-console.log('concatening');
 lcd.innerHTML = lcd.innerHTML.concat(currentNumberKey);
 updDebug();
     }
@@ -282,99 +286,115 @@ currentOpKey = "+";
 lastOpDispl.innerHTML = currentOpKey;
 updDebug();
 anOpIsOutstanding=true;
+dotSensor();
+lcd.innerHTML = null;
 return;
 } 
 
 function minus (){
- anOpIsOutstanding=true;
-substractionAccum = inputBuffer;
+anOpIsOutstanding=true;
+substractionAccum = inputBuffer/(10**rightDigitsCnt);
 inputBuffer = null;
 lcd.innerHTML =substractionAccum;
 currentOpKey = "-";
 lastOpDispl.innerHTML = currentOpKey;
 updDebug();
+dotSensor();
+lcd.innerHTML = null;
 return;
 }
 
 function multiply (){
 anOpIsOutstanding=true;
-multiplicationAccum = inputBuffer;
+multiplicationAccum = inputBuffer/(10**rightDigitsCnt);
 inputBuffer = null;
 lcd.innerHTML = multiplicationAccum;
 currentOpKey = "&#215;";
 lastOpDispl.innerHTML = currentOpKey;
 updDebug();
+dotSensor();
+lcd.innerHTML = null;
+dotSensor();
+lcd.innerHTML = null;
 return;
 } 
 
 function divide (){
 anOpIsOutstanding=true;
-divisionAccum = inputBuffer;
+divisionAccum = inputBuffer/(10**rightDigitsCnt);
 inputBuffer = null;
 lcd.innerHTML = divisionAccum;
 currentOpKey = "&#247;";
 lastOpDispl.innerHTML = currentOpKey;
 updDebug();
+dotSensor();
+lcd.innerHTML = null;
+dotSensor();
+lcd.innerHTML = null;
 return;
 } 
 
 function percentage (){
 anOpIsOutstanding=true;
-percentAccum = inputBuffer;
+percentAccum = inputBuffer/(10**rightDigitsCnt);
 inputBuffer = null;
 lcd.innerHTML = percentAccum;
 currentOpKey = "%";
 lastOpDispl.innerHTML = currentOpKey;
 updDebug();
+dotSensor();
+lcd.innerHTML = null;
+dotSensor();
+lcd.innerHTML = null;
 return;
-} 
-
-/*function dot(){
-  inputBuffer = inputBuffer.toFixed(0);
-  lcd.innerHTML = lcd.innerHTML.concat('.');
-return;
-} */
+}
 
 function equal (){
 if(currentOpKey==="+" || currentOpKey=== 'C') {
-  mainAccum =additionAccum + inputBuffer;
+//mainAccum = additionAccum + inputBuffer;
+mainAccum = additionAccum + (inputBuffer/(10**rightDigitsCnt));
 additionAccum = 0;
-  inputBuffer = null;
-  lcd.innerHTML = mainAccum;
+inputBuffer = null;
+lcd.innerHTML = mainAccum;
 currentOpKey = '=';
 lastOpDispl.innerHTML = currentOpKey;
+dotSensor();
 updDebug();
 }else if(currentOpKey==="-") {
-  mainAccum =substractionAccum - inputBuffer;
+  mainAccum =substractionAccum - inputBuffer/(10**rightDigitsCnt);
 substractionAccum = 0;
   inputBuffer = null;
   lcd.innerHTML = mainAccum;
 currentOpKey = '=';
 lastOpDispl.innerHTML = currentOpKey;
+dotSensor();
 updDebug();
 }else if(currentOpKey==="&#215;") {// *
-  mainAccum = multiplicationAccum * inputBuffer;
+  mainAccum = multiplicationAccum * inputBuffer/(10**rightDigitsCnt);
 multiplicationAccum = 0;
   inputBuffer = null;
   lcd.innerHTML = mainAccum;
 currentOpKey = '='; // switch currentOpKey to "="
 lastOpDispl.innerHTML = currentOpKey;
+dotSensor();
 updDebug();
 }else if(currentOpKey==="&#247;") {// division operation
-  mainAccum = divisionAccum / inputBuffer;
+  mainAccum = divisionAccum / (inputBuffer/(10**rightDigitsCnt));
 divisionAccum = 0;
   inputBuffer = null;
   lcd.innerHTML = mainAccum;
 currentOpKey = "=";
 lastOpDispl.innerHTML = currentOpKey;
+dotSensor();
 updDebug();
 }else if(currentOpKey==="%") {
-  mainAccum = percentAccum * inputBuffer/100;
+  mainAccum = percentAccum * (inputBuffer/(10**rightDigitsCnt)/100);
 percentAccum = 0;
   inputBuffer = null;
   lcd.innerHTML = mainAccum;
 currentOpKey = "=";
 lastOpDispl.innerHTML = currentOpKey;
+dotSensor();
 updDebug();
 }else if(currentOpKey==="&middot;") {
 //NOP
@@ -385,12 +405,12 @@ currentNumberKey = preservedNumberKey;
 numKeyHandler();
 currentOpKey = "♽";
 lastOpDispl.innerHTML = currentOpKey;
+dotSensor();
 updDebug();
 }else{
 // next test...;
 }
 anOpIsOutstanding=false;
-aDotIsOutstanding=false;
 return;
 } 
 
@@ -448,7 +468,7 @@ lastOpDispl.innerHTML = currentOpKey;
 updDebug();
   }else{
 inputBuffer = inputBuffer*(-1);
-lcd.innerHTML = inputBuffer;
+lcd.innerHTML = (inputBuffer/10**rightDigitsCnt);
 preservedOpKey = currentOpKey;// Preserve currentOpKey
 currentOpKey='&#177;'; // Change sign entity code 
 lastOpDispl.innerHTML = currentOpKey;
@@ -490,7 +510,7 @@ lastOpDispl.innerHTML = currentOpKey;
 currentOpKey=preservedOpKey; // Restore previous currentOpKey
 } else{ // inputBuffer >=0
 inputBuffer = Math.floor(inputBuffer/10);
-lcd.innerHTML = inputBuffer;
+lcd.innerHTML = inputBuffer/(10**rightDigitsCnt);
 preservedOpKey = currentOpKey;// Preserve currentOpKey
 currentOpKey='&#x232b';// lastOp is backspace 
 lastOpDispl.innerHTML = currentOpKey;
@@ -519,24 +539,25 @@ function clear (){
  multiplicationAccum=0;
  divisionAccum=0;
  percentAccum=0;
- dotAccum =0;
- mainAccum=null;
  lcd.innerHTML = null;
  currentNumberKey=null;
  currentOpKey = 'C' ;
  lastOpDispl.innerHTML = currentOpKey;
  notif.innerHTML = '';
  anOpIsOutstanding=false;
- aDotIsOutstanding=false;
+ dotSensor();
+ dotAccum =rightDigitsCnt;
+ mainAccum=null;
  alertColor.backgroundColor='transparent';
  // equalKey.setAttribute('value', '=');
 // debug items:
+dotSensor();
 updDebug();
 } 
 
-function updDebug() {
+function updDebug () {
 inpBufferDebug.innerText = inputBuffer;
-sumAccDebug.innerHTML =additionAccum;
+sumAccDebug.innerHTML = additionAccum;
 minusAccDebug.innerHTML =substractionAccum;
 multAccDebug.innerText = multiplicationAccum;
 divAccDebug.innerHTML = divisionAccum;
@@ -544,7 +565,7 @@ mainAccDebug.innerText = mainAccum;
 currentOpKeyDebug.innerHTML =currentOpKey;
 lcdDebug.innerHTML = lcd.innerHTML;
 percentAccDebug.innerHTML = percentAccum;
-dotAccDebug.innerHTML = dotAccum;
+dotAccDebug.innerHTML = rightDigitsCnt;
 } 
 
 // ***** TEST *****
