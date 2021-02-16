@@ -1,11 +1,16 @@
 "use strict";
 
 // global variables
+let keyPressed;
+let operant1=null;
+let operant2=null;
+let operator=null;
+let finalResult=null;
+
 let currentNumberKey=null;
 let preservedNumberKey=null;
 let currentOpKey=null;
 let preservedOpKey=null;
-let keyPressed;
 let anOpIsOutstanding=false;
 let inputBuffer=0; // This is the source register for numeric values. All other numeric values feed from it. 
 let additionAccum=0;
@@ -19,7 +24,7 @@ let dotOutstanding=false;
 let rightDigitsCnt=0;
 
 // Flags used by operators event listeners
-let keyPressedUnary=false;
+let keyPressedUnary=null;
 let keyPressedNumber=false;
 let keyPressedDot=false;
 let keyPressedChgSign=false;
@@ -33,7 +38,8 @@ let keyPressedMultiply=false;
 let keyPressedDivide=false;
 let keyPressedPercentage=false;
 let keyPressedEquals=false;
-let sumFlag=false;
+
+/*let sumFlag=false;
 let minusFlag=false;
 let multiplyFlag=false;
 let divideFlag=false;
@@ -41,9 +47,8 @@ let percentageFlag=false;
 let dotFlag =false;
 let equalFlag=false;
 let recycleFlag=false;
-let clearFlag=false;
 let changeSignFlag=false;
-let backspaceFlag=false;
+let backspaceFlag=false;*/
 
 // Grab debugg items
 const currentOpKeyDebug = document.querySelector('#last-op-debug');
@@ -69,18 +74,24 @@ const key7 = document.querySelector('#key7');
 const key8 = document.querySelector('#key8');
 const key9 = document.querySelector('#key9');
 const dotKey = document.querySelector('#dotKey');
-// Grab operation keys
+
+// Grab binary operation keys
 const sumKey = document.querySelector('#sum');
 const minusKey = document.querySelector('#minus');
 const multiplyKey = document.querySelector('#multiply');
 const divideKey = document.querySelector('#divide');
 const equalKey = document.querySelector('#equal');
 const percentageKey = document.querySelector('#percentage');
+
+// Grab unary operation keys
+const clearKey = document.querySelector('#clear');
 const changeSignKey = document.querySelector('#change-sign');
 const backspaceKey = document.querySelector('#backspace');
-const clearKey = document.querySelector('#clear');
+const invertKey = document.querySelector('#invert');
+const sqrtKey = document.querySelector('#sqrt');
+const squareKey = document.querySelector('#square');
 
-// Grab items to display on LCD the last operator
+// Grab items to display the last operator on LCD
 const lastOpDispl = document.querySelector('#lastOpDispl');
 // Grab LCD to display calculation numbers and signs
 const lcd=document.querySelector('#lcd');
@@ -90,36 +101,64 @@ const alertColor=document.querySelector ('#notification-area').style;
 
 // Reset auxiliary functions:
 function updDebug () {
-inpBufferDebug.innerText = inputBuffer;
-sumAccDebug.innerHTML = additionAccum;
-minusAccDebug.innerHTML =substractionAccum;
-multAccDebug.innerText = multiplicationAccum;
+inpBufferDebug.innerText = operant1;
+sumAccDebug.innerHTML = operant2;
+multAccDebug.innerText = operator;
+percentAccDebug.innerHTML = finalResult;
+lastOpDispl.innerHTML = operator;
+currentOpKeyDebug.innerHTML =operator;
+lcdDebug.innerHTML = lcd.innerHTML;
+
+
+
+/*minusAccDebug.innerHTML =substractionAccum;
 divAccDebug.innerHTML = divisionAccum;
 mainAccDebug.innerText = mainAccum;
 currentOpKeyDebug.innerHTML =currentOpKey;
 lcdDebug.innerHTML = lcd.innerHTML;
-percentAccDebug.innerHTML = percentAccum;
 dotAccDebug.innerHTML = rightDigitsCnt;
-} 
+*/
+}
+
 function clear (){
- inputBuffer=0;
+operant1=null;
+operant2=null;
+operator=null;
+finalResult=null;
+keyPressedUnary=null;
+keyPressedNumber=false;
+keyPressedDot=false;
+keyPressedChgSign=false;
+keyPressedBackspace=false;
+keyPressedInv=false;
+keyPressedSqrt=false;
+keyPressedSquare=false;
+keyPressedAdd=false;
+keyPressedSubstract=false;
+keyPressedMultiply=false;
+keyPressedDivide=false;
+keyPressedPercentage=false;
+keyPressedEquals=false;
+lcd.innerHTML = null;
+
+/* inputBuffer=0;
  additionAccum=0;
  substractionAccum=0;
  multiplicationAccum=0;
  divisionAccum=0;
  percentAccum=0;
- lcd.innerHTML = null;
+
  currentNumberKey=null;
  currentOpKey = 'C' ;
  lastOpDispl.innerHTML = currentOpKey;
  notif.innerHTML = '';
  anOpIsOutstanding=false;
- dotSensor();
  dotAccum =rightDigitsCnt;
  mainAccum=null;
- alertColor.backgroundColor='transparent';
+ alertColor.backgroundColor='transparent';*/
 // debug items:
 updDebug();
+lastOpDispl.innerHTML = 'C';
 } 
 
 // Initialize calc
@@ -128,7 +167,8 @@ window.onload = function(){
   updDebug();
 };
 
-// Key Presses - Event listeners for numeric keys:
+// Key Presses - Event listeners for unary key presses:
+clearKey.addEventListener('click', () =>{clear();});
 key0.addEventListener('click', ()=>{
   keyPressedUnary=true;
   keyPressedNumber=true;
@@ -191,62 +231,104 @@ key9.addEventListener('click',()=>{
 });
 dotKey.addEventListener('click', ()=>{
   keyPressedUnary=true;
-  keyPressedNumber=true;
+  keyPressedDot=true;
   keyPressed='.';
   main();
 });
 changeSignKey.addEventListener('click', ()=>{
   keyPressedUnary=true;
-  keyPressedNumber=true;
+  keyPressedChgSign=true;
   keyPressed = '&#177';
   main();
 });
 backspaceKey.addEventListener('click', ()=>{
   keyPressedUnary=true;
-  keyPressedNumber=true;
+  keyPressedBackspace=true;
   keyPressed='&#x232b';
   main();
 });
+
 invertKey.addEventListener('click', ()=>{
   keyPressedUnary=true;
-  keyPressedNumber=true;
-  keyPressed='invert';
+  keyPressedInv=true;
+  keyPressed='1/x';
   main();
 });
 sqrtKey.addEventListener('click', ()=>{
   keyPressedUnary=true;
-  keyPressedNumber=true;
-  keyPressed='sqrt';
+  keyPressedSqrt=true;
+  keyPressed='&#x221a;';
   main();
 });
 squareKey.addEventListener('click', ()=>{
   keyPressedUnary=true;
-  keyPressedNumber=true;
-  keyPressed='square';
+  keyPressedSquare=true;
+  keyPressed='x²';
   main();
 });
 
-// Operations event listeners 
+// Key Presses - Event listeners for binary key presses:
 sumKey.addEventListener('click', ()=>{
-  keyPressedBinary=true;
-  keyPressedNumber=true;
-  keyPressed='square';
+  keyPressedUnary=false;
+  keyPressedAdd=true;
+  keyPressed='+';
   main();
 });
-minusKey.addEventListener('click', ()=>{ minusFlag=true;keyPressed=NaN;dotHandler();operatorsRouter();}); 
-multiplyKey.addEventListener('click', ()=>{ multiplyFlag=true;keyPressed=NaN;dotHandler();operatorsRouter();}); 
-divideKey.addEventListener('click', ()=>{ divideFlag=true;keyPressed=NaN;dotHandler();operatorsRouter();});
-percentageKey.addEventListener('click', ()=>{percentageFlag=true;keyPressed=NaN;dotHandler();operatorsRouter();});
-
-clearKey.addEventListener('click', () =>{clearFlag=true;keyPressed=NaN;dotHandler();clear();});
-equalKey.addEventListener('click', ()=>{equalFlag=true;keyPressed=NaN;dotHandler();equal();});
-
-//operatorsRouter();
+minusKey.addEventListener('click',  ()=>{
+  keyPressedUnary=false;
+  keyPressedSubstract=true;
+  keyPressed='-';
+  main();
+});
+multiplyKey.addEventListener('click',  ()=>{
+  keyPressedUnary=false;
+  keyPressedMultiply=true;
+  keyPressed='&#215;';
+  main();
+});
+divideKey.addEventListener('click',  ()=>{
+  keyPressedUnary=false;
+  keyPressedDivide=true;
+  keyPressed='&#247;';
+  main();
+});
+percentageKey.addEventListener('click', ()=>{
+  keyPressedUnary=false;
+  keyPressedPercentage=true;
+  keyPressed='%';
+  main();
+});
+equalKey.addEventListener('click', ()=>{
+  keyPressedUnary=false;
+  keyPressedEquals=true;
+  keyPressed='=';
+  main();
 });
 
 // functions called by Main
 function appendDigit (){
-
+console.log('operator',operator, 'operant1', operant1, 'keyPressed', keyPressed);
+if(operator===null){
+if(operant1===null){// on virgin location concat keyPressed with empty string
+operant1='';
+operant1=operant1.concat(keyPressed);
+}else{
+operant1=operant1.concat(keyPressed);
+}
+lcd.innerHTML=operant1;
+}else{
+if(operant2===null){// on virgin location concat keyPressed with empty string
+operant2='';
+operant2=operant2.concat(keyPressed);
+}else{
+operant2=operant2.concat(keyPressed);
+}
+lcd.innerHTML=operant2;
+}
+keyPressedNumber=false;
+keyPressedDot=false;
+updDebug();
+return;
 }
 
 function appendDot (){
@@ -254,11 +336,31 @@ function appendDot (){
 }
 
 function changeSign (){
-
+if(operator===null){
+operant1=(operant1*(-1)).toString();
+lcd.innerHTML=operant1;
+}else{
+operant2=(operant2*(-1)).toString();
+lcd.innerHTML=operant2;
+}
+keyPressedChgSign=false;
+updDebug();
+lastOpDispl.innerHTML = '&#177';
+return;
 }
 
 function backspace (){
-
+if(operator===null){
+operant1=operant1.slice(0, operant1.length-1);
+lcd.innerHTML=operant1;
+}else{
+operant2=operant2.slice(0, operant2.length-1);
+lcd.innerHTML=operant2;
+}
+keyPressedChgSign=false;
+updDebug();
+lastOpDispl.innerHTML = '&#x232b';
+return;
 }
 
 function invert (){
@@ -282,41 +384,41 @@ function recycle (){
 }
 
 function operandLoader (){
-
+console.log('operandLoader sub', 'keyPressed', keyPressed);
+operator=keyPressed;
+updDebug();
 }
 
-function addition (){
-
+function performCalc (){
+//finalResult=`${operant1} + ${operant2}`;
+if(operator==='+'){
+finalResult= parseFloat(operant1) + parseFloat(operant2);
+}else if(operator==='-'){
+finalResult= parseFloat(operant1) - parseFloat(operant2);
+}else if(operator==='&#215;'){// multiplication
+finalResult= parseFloat(operant1) * parseFloat(operant2);
+}else if(operator==='&#247;'){// division
+finalResult= parseFloat(operant1) / parseFloat(operant2);
+}else if(operator==='%'){
+finalResult= parseFloat(operant1) * parseFloat(operant2)/100;
+}else if(operator==='%'){
+finalResult= parseFloat(operant1) * parseFloat(operant2)/100;
 }
-
-function subtraction (){
-
-}
-
-function multiplication (){
-
-}
-
-function division (){
-
-}
-
-function percentage (){
-
-}
-
-function performCalc(){
-
+lcd.innerHTML=finalResult;
+updDebug();
+lastOpDispl.innerHTML = '=';
+return;
 }
 
 // Main
-function main(){
+function main (){
+console.log(`Main function\n keyPressedUnary: ${keyPressedUnary} keyPressed: ${keyPressed}`);
 if(keyPressedUnary){// 0y, key press was unary?
 console.log('if 0');
 // 1 is the yes of 0
 //1
 if(keyPressedNumber){// 1y
-console.log('if 1');
+console.log(`if 1:\n keyPressedNumber: ${keyPressedNumber}`);
 //call sub appendDigit.
 appendDigit();
 }else{// 1n
@@ -325,7 +427,7 @@ appendDigit();
 if(keyPressedDot){// 2y
 console.log('if 2');
 // call sub appendDot.
-appendDot();
+appendDigit();
 }else{// 2n, 
 // 3 is the else of 2
 // 3
@@ -393,7 +495,7 @@ return;
 // 10 is the else of 8
 // 10
 if(keyPressedAdd){// 10y
-console.log('if 10');
+console.log('if 10: ','keyPressedAdd', keyPressedAdd);
 // call sub operandLoader.
 operandLoader();
 }else{// 10n
@@ -435,4 +537,4 @@ return;
 }
 }
 }
-} 
+}
