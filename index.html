@@ -13,7 +13,7 @@
     <span id="lastOpDispl"></span>
     <span id="lcd" value="">0</span>
   </div>
-  
+ 
   <div id="keys">
     <input type="button" class="key" id="clear" value="C">
     <input type="button" class="key" id="percentage" value="%">
@@ -33,13 +33,18 @@
     <input type="button" class="key" id="sum" value="+">
     <input type="button" class="key" id="key0" value="0">
     <input type="button" class="key" id="dotKey" value="&middot;">
+    <input type="button" class="key" id="square" value="x²">
+    <input type="button" class="key" id="sqrt" value="&#x221a;">
+    <input type="button" class="key" id="help" value="&#x3f;">
+    <input type="button" class="key" id="invert" value="1/x">
+   <!-- x&#x207b;&#xb9; -->
     <input type="button" class="key" id="backspace" value="&#x232b;">
     <input type="button" class="key" id="equal" value="=">
   </div>
   
   <div id="debug">
    
-   <div class="top-clue" >
+  <div class="top-clue" >
     <p class="visual-top">
      lastOp:
      <span id="last-op-debug"></span>
@@ -50,51 +55,66 @@
    </div>  
     
    <div class="top-clue" >
-    
     <p class="visual-top">
-     inputBuffer: 
+     operand1: 
      <span id="inpBufferDebug"></span>
     </p>
     <p class="visual-top">
+     operand2:  
+     <span id="sumAccDebug"></span>
+    </p>
+    
+    <!--   </p>
+    <p class="visual-top">
      mainAcc:  
      <span id="mainAccDebug"></span>
-    </p>
+    </p> -->
+  
    </div>
  
-   <div class="top-clue" >
+    <!--   <div class="top-clue" >
     <p class="visual-top">
-    sumAcc: <span id="sumAccDebug"></span>
-   </p>
-   <p class="visual-top">
-    minusAcc: <span id="minusAccDebug"></span>
-   </p>
-   </div>
-  
-  
-   <div class="top-clue" >
-   <p class="visual-top">
-    multAcc: <span id="multAccDebug"></span>
-   </p>
-   <p class="visual-top">
-    divAcc: <span id="divAccDebug"></span>
-   </p>
-   </div>
- 
-   <div class="top-clue" >
-   <p class="visual-top">
-    percentAcc: <span id="prcntAccDebug"></span>
-   <p class="visual-top">
-    dotAcc: <span id="dotAccDebug"></span>
-   </p>
-   </div>
+    operand2: <span id="sumAccDebug"></span>
+   </p> -->
 
+    <!--    <p class="visual-top">
+    minusAcc: <span id="minusAccDebug"></span>
+   </p>    </div>-->
+
+
+  <!--  -->
+  
+  <div class="top-clue" >
+   <p class="visual-top">
+    operator: <span id="multAccDebug"></span>
+   </p>
+ <p class="visual-top">
+    RESULT: <span id="prcntAccDebug"></span></p>
+ 
+   </div>  
+  
+  <!--  -->
+  
+ 
+   
+    <!--   <div class="top-clue" >
+   <p class="visual-top">
+    operator: <span id="multAccDebug"></span>
+   </p> <p class="visual-top">
+    divAcc: <span id="divAccDebug"></span>
+   </p>  </div> -->
+   
   </div>
   
 <div id= "notification-area">
   <span id= "notification"></span>
 </div>
-<input type="button" name="debug" id="test" value="&#x267d; TEST" />
 
-  <script type="text/javascript" charset="utf-8" src="calc.js"></script>
+  <!--  -->
+<input type="button" name="debug" id="test" value="&#x267d; TEST" />
+<input type="button" name="debug2" id="test2" value="1/x" />
+<input type="button" name="debug2" id="test3" value="x²" />
+
+  <script type="text/javascript" charset="utf-8" src="newCalc.js"></script>
 </body>
 </html>
