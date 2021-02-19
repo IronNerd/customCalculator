@@ -2,27 +2,12 @@
 
 // global variables
 let keyPressed;
-let operant1=null;
-let operant2=null;
+let operand1=null;
+let operand2=null;
 let operator=null;
 let finalResult=null;
 let preservedParameter1=null;
-let preservedParameter2=null;
-let currentNumberKey=null;
-let preservedNumberKey=null;
 let currentOpKey=null;
-let preservedOpKey=null;
-let anOpIsOutstanding=false;
-let inputBuffer=0; // This is the source register for numeric values. All other numeric values feed from it. 
-let additionAccum=0;
-let substractionAccum=0;
-let multiplicationAccum=0;
-let divisionAccum = 0;
-let percentAccum = 0;
-let dotAccum = 0;
-let mainAccum = null;
-let dotOutstanding=false;
-let rightDigitsCnt=0;
 
 // Flags used by operators event listeners
 let keyPressedUnary=null;
@@ -39,17 +24,6 @@ let keyPressedMultiply=false;
 let keyPressedDivide=false;
 let keyPressedPercentage=false;
 let keyPressedEquals=false;
-
-/*let sumFlag=false;
-let minusFlag=false;
-let multiplyFlag=false;
-let divideFlag=false;
-let percentageFlag=false;
-let dotFlag =false;
-let equalFlag=false;
-let recycleFlag=false;
-let changeSignFlag=false;
-let backspaceFlag=false;*/
 
 // Grab debugg items
 const currentOpKeyDebug = document.querySelector('#last-op-debug');
@@ -102,27 +76,19 @@ const alertColor=document.querySelector ('#notification-area').style;
 
 // Reset auxiliary functions:
 function updDebug () {
-inpBufferDebug.innerText = operant1;
-sumAccDebug.innerHTML = operant2;
+inpBufferDebug.innerText = operand1;
+sumAccDebug.innerHTML = operand2;
 multAccDebug.innerText = operator;
 percentAccDebug.innerHTML = finalResult;
 lastOpDispl.innerHTML = operator;
 currentOpKeyDebug.innerHTML =operator;
 lcdDebug.innerHTML = lcd.innerHTML;
-
-/*minusAccDebug.innerHTML =substractionAccum;
-divAccDebug.innerHTML = divisionAccum;
-mainAccDebug.innerText = mainAccum;
-currentOpKeyDebug.innerHTML =currentOpKey;
-lcdDebug.innerHTML = lcd.innerHTML;
-dotAccDebug.innerHTML = rightDigitsCnt;
-*/
 return;
 }
 
 function clear (){
-operant1=null;
-operant2=null;
+operand1=null;
+operand2=null;
 operator=null;
 finalResult=null;
 keyPressedUnary=null;
@@ -142,20 +108,6 @@ keyPressedEquals=false;
 lcd.innerHTML = null;
 notif.innerHTML = '';
 alertColor.backgroundColor='transparent';
-// debug items:
-/* inputBuffer=0;
- additionAccum=0;
- substractionAccum=0;
- multiplicationAccum=0;
- divisionAccum=0;
- percentAccum=0;
- currentNumberKey=null;
- currentOpKey = 'C' ;
- lastOpDispl.innerHTML = currentOpKey;
- anOpIsOutstanding=false;
- dotAccum =rightDigitsCnt;
- mainAccum=null;'*/
-
 updDebug();
 lastOpDispl.innerHTML = 'C';
 return;
@@ -164,107 +116,110 @@ return;
 // Initialize calc
 window.onload = function(){
 clear();
+notif.innerHTML=`           😁 Welcome to EASYCALC 😁
+           Your arithmetics assistant.
+               For help press ❔`;
+alertColor.backgroundColor='darkgreen';
 return;
 };
-
 // Key Presses - Event listeners for unary key presses:
 clearKey.addEventListener('click', () =>{clear();});
 key0.addEventListener('click', ()=>{
   keyPressedUnary=true;
   keyPressedNumber=true;
   keyPressed=0;
-  main();
+  switchCalcModes();
 }); 
 key1.addEventListener('click', ()=>{
   keyPressedUnary=true;
   keyPressedNumber=true;
   keyPressed=1;
-  main();
+  switchCalcModes();
 }); 
 key2.addEventListener('click',()=>{
   keyPressedUnary=true;
   keyPressedNumber=true;
   keyPressed=2;
-  main();
+  switchCalcModes();
 }); 
 key3.addEventListener('click',()=>{
   keyPressedUnary=true;
   keyPressedNumber=true;
   keyPressed=3;
-  main();
+  switchCalcModes();
 }); 
 key4.addEventListener('click',()=>{
   keyPressedUnary=true;
   keyPressedNumber=true;
   keyPressed=4;
-  main();
+  switchCalcModes();
 }); 
 key5.addEventListener('click',()=>{
   keyPressedUnary=true;
   keyPressedNumber=true;
   keyPressed=5;
-  main();
+  switchCalcModes();
 }); 
 key6.addEventListener('click',()=>{
   keyPressedUnary=true;
   keyPressedNumber=true;
   keyPressed=6;
-  main();
+  switchCalcModes();
 }); 
 key7.addEventListener('click',()=>{
   keyPressedUnary=true;
   keyPressedNumber=true;
   keyPressed=7;
-  main();
+  switchCalcModes();
 }); 
 key8.addEventListener('click',()=>{
   keyPressedUnary=true;
   keyPressedNumber=true;
   keyPressed=8;
-  main();
+  switchCalcModes();
 }); 
 key9.addEventListener('click',()=>{
   keyPressedUnary=true;
   keyPressedNumber=true;
   keyPressed=9;
-  main();
+  switchCalcModes();
 });
 dotKey.addEventListener('click', ()=>{
   keyPressedUnary=true;
   keyPressedDot=true;
   keyPressed='.';
-  main();
+  switchCalcModes();
 });
 changeSignKey.addEventListener('click', ()=>{
   keyPressedUnary=true;
   keyPressedChgSign=true;
   keyPressed = '&#177';
-  main();
+  switchCalcModes();
 });
 backspaceKey.addEventListener('click', ()=>{
   keyPressedUnary=true;
   keyPressedBackspace=true;
   keyPressed='&#x232b';
-  main();
+  switchCalcModes();
 });
 
 invertKey.addEventListener('click', ()=>{
   keyPressedUnary=true;
   keyPressedInv=true;
   keyPressed='1/x';
-  main();
+  switchCalcModes();
 });
 sqrtKey.addEventListener('click', ()=>{
   keyPressedUnary=true;
   keyPressedSqrt=true;
   keyPressed='&#x221a;';
-  main();
+  switchCalcModes();
 });
 squareKey.addEventListener('click', ()=>{
   keyPressedUnary=true;
   keyPressedSquare=true;
   keyPressed='x²';
-  main();
+  switchCalcModes();
 });
 
 // Key Presses - Event listeners for binary key presses:
@@ -272,31 +227,31 @@ sumKey.addEventListener('click', ()=>{
   keyPressedUnary=false;
   keyPressedAdd=true;
   keyPressed='+';
-  main();
+  switchCalcModes();
 });
 minusKey.addEventListener('click',  ()=>{
   keyPressedUnary=false;
   keyPressedSubstract=true;
   keyPressed='-';
-  main();
+  switchCalcModes();
 });
 multiplyKey.addEventListener('click',  ()=>{
   keyPressedUnary=false;
   keyPressedMultiply=true;
   keyPressed='&#215;';
-  main();
+  switchCalcModes();
 });
 divideKey.addEventListener('click',  ()=>{
   keyPressedUnary=false;
   keyPressedDivide=true;
   keyPressed='&#247;';
-  main();
+  switchCalcModes();
 });
 percentageKey.addEventListener('click', ()=>{
   keyPressedUnary=false;
   keyPressedPercentage=true;
   keyPressed='%';
-  main();
+  switchCalcModes();
 });
 equalKey.addEventListener('click', ()=>{
   keyPressedUnary=false;
@@ -308,21 +263,27 @@ equalKey.addEventListener('click', ()=>{
 // functions called by Main
 function appendDigit (){// Also appends dot
 if(operator===null){
-if(operant1===null){// If null, concat keyPressed with empty string
-operant1='';
-operant1=operant1.concat(keyPressed);
-}else{
-operant1=operant1.concat(keyPressed);
+if(keyPressed==='.' && operand1===null){
+keyPressed='0.';
 }
-lcd.innerHTML=operant1;
+if(operand1===null){// If null, concat keyPressed with empty string
+operand1='';
+operand1=operand1.concat(keyPressed);
 }else{
-if(operant2===null){// on virgin location concat keyPressed with empty string
-operant2='';
-operant2=operant2.concat(keyPressed);
-}else{
-operant2=operant2.concat(keyPressed);
+operand1=operand1.concat(keyPressed);
 }
-lcd.innerHTML=operant2;
+lcd.innerHTML=operand1;
+}else{// @@@
+if(keyPressed==='.' && operand2===null){
+keyPressed='0.';
+}
+if(operand2===null){// on virgin location concat keyPressed with empty string
+operand2='';
+operand2=operand2.concat(keyPressed);
+}else{
+operand2=operand2.concat(keyPressed);
+}
+lcd.innerHTML=operand2;
 }
 keyPressedNumber=false;
 keyPressedDot=false;
@@ -332,11 +293,11 @@ return;
 
 function changeSign (){
 if(operator===null){
-operant1=(operant1*(-1)).toString();
-lcd.innerHTML=operant1;
+operand1=(operand1*(-1)).toString();
+lcd.innerHTML=operand1;
 }else{
-operant2=(operant2*(-1)).toString();
-lcd.innerHTML=operant2;
+operand2=(operand2*(-1)).toString();
+lcd.innerHTML=operand2;
 }
 keyPressedChgSign=false;
 updDebug();
@@ -346,11 +307,11 @@ return;
 
 function backspace (){
 if(operator===null){
-operant1=operant1.slice(0, operant1.length-1);
-lcd.innerHTML=operant1;
+operand1=operand1.slice(0, operand1.length-1);
+lcd.innerHTML=operand1;
 }else{
-operant2=operant2.slice(0, operant2.length-1);
-lcd.innerHTML=operant2;
+operand2=operand2.slice(0, operand2.length-1);
+lcd.innerHTML=operand2;
 }
 keyPressedBackspace=false;
 updDebug();
@@ -359,17 +320,32 @@ return;
 }
 
 function invert (){
-if(operant1==='0' ||operant1===null){
-notif.innerHTML=` ☹️ Sorry.Try again with a non zero value.`;
-alertColor.backgroundColor='darkred';
+if(operand1==='0' ||operand1===null){
+notif.innerHTML=`
+                   ☹️ Sorry
+       Try again with a non zero value.`;
+alertColor.backgroundColor='darkgreen';
+operand1=null;
+updDebug();
+lcd.innerHTML=null;
 return;
 }
 if(operator===null){
-operant1=(1/operant1).toString();
-lcd.innerHTML=operant1;
+operand1=(1/operand1).toString();
+lcd.innerHTML=operand1;
 }else{
-operant2=(1/operant2).toString();
-lcd.innerHTML=operant2;
+if(operand2==='0' ||operand2===null){
+notif.innerHTML=` ☹️ Sorry.
+Try again with a non zero value. Entry so far:
+${operand1} ${operator}`;
+alertColor.backgroundColor='darkgreen';
+operand2=null;
+updDebug();
+lcd.innerHTML=null;
+return;
+} 
+operand2=(1/operand2).toString();
+lcd.innerHTML=operand2;
 }
 keyPressedInv=false;
 updDebug();
@@ -379,17 +355,19 @@ return;
 
 function sqrt (){
 if(operator===null){
-if(operant1<0){
-notif.innerHTML =' ☹️ Sorry. Negative numbers not allowed for square root operator. Clear and try again.';
+if(operand1<0){
+notif.innerHTML =`                   ☹️ Sorry.
+ Only positive numbers for square root operator.
+              Clear and try again.`;
 alertColor.backgroundColor='darkred';
 keyPressedSqrt=false;
 return;
 }
-operant1=Math.sqrt(operant1).toString();
-lcd.innerHTML=operant1;
+operand1=Math.sqrt(operand1).toString();
+lcd.innerHTML=operand1;
 }else{
-operant2=Math.sqrt(operant2).toString();
-lcd.innerHTML=operant2;
+operand2=Math.sqrt(operand2).toString();
+lcd.innerHTML=operand2;
 }
 keyPressedSqrt=false;
 updDebug();
@@ -399,11 +377,11 @@ return;
 
 function square (){
 if(operator===null){
-operant1=(operant1*operant1).toString();
-lcd.innerHTML=operant1;
+operand1=(operand1*operand1).toString();
+lcd.innerHTML=operand1;
 }else{
-operant2=(operant2*operant2).toString();
-lcd.innerHTML=operant2;
+operand2=(operand2*operand2).toString();
+lcd.innerHTML=operand2;
 }
 keyPressedSquare=false;
 updDebug();
@@ -439,31 +417,31 @@ updDebug();
 
 function performCalc (){
 if(operator==='+'){
-finalResult= parseFloat(operant1) + parseFloat(operant2);
+finalResult= parseFloat(operand1) + parseFloat(operand2);
 updDebug();
 }else if(operator==='-'){
-finalResult= parseFloat(operant1) - parseFloat(operant2);
+finalResult= parseFloat(operand1) - parseFloat(operand2);
 updDebug();
 }else if(operator==='&#215;'){// multiplication
-finalResult= parseFloat(operant1) * parseFloat(operant2);
+finalResult= parseFloat(operand1) * parseFloat(operand2);
 updDebug();
 }else if(operator==='&#247;'){// division
-console.log(`Division operant2: ${operant2}`);
-if(operant2==='0' || operant2===null||operant2===undefined){
+console.log(`Division operand2: ${operand2}`);
+if(operand2==='0' || operand2===null||operand2===undefined){
 alertColor.backgroundColor='darkred';
  notif.innerHTML=' ☹️ Sorry. Divide by zero is not allowed. Clear and try again.';
 return;}
-finalResult= parseFloat(operant1) / parseFloat(operant2);
+finalResult= parseFloat(operand1) / parseFloat(operand2);
 updDebug();
 }else if(operator==='%'){
-finalResult= parseFloat(operant1) * parseFloat(operant2)/100;
+finalResult= parseFloat(operand1) * parseFloat(operand2)/100;
 updDebug();
 }else if(operator==='%'){
-finalResult= parseFloat(operant1) * parseFloat(operant2)/100;
+finalResult= parseFloat(operand1) * parseFloat(operand2)/100;
 updDebug();
 }else{// error: missing operator
 alertColor.backgroundColor='darkred';
- notif.innerHTML ='☹️ Sorry. Two numbers and an operator required for this particular operation. Clear and start all over again.';
+ notif.innerHTML ='☹️ Sorry. Two numbers and an operator are required to perform a calculation. Clear and start all over again.';
 }
 return;
 }
@@ -535,10 +513,10 @@ return;
 // 8
 if(keyPressedEquals){// 8y
 console.log('if 8');
-if(operant1===null||operant2===null){
+if(operand1===null||operand2===null){
 // Error: missing operand
 alertColor.backgroundColor='darkred';
- notif.innerHTML = '☹️ Sorry. Two numbers and an operator required for this particular operation. Clear and start all over again.';
+ notif.innerHTML='☹️ Sorry. Two numbers and an operator are required to perform a calculation. Clear and start all over again.';
 return;
 }
 // 9 is the yes of 8
@@ -555,9 +533,18 @@ return;
 }
 }else{// 8n, 
 // 10 is the else of 8
-// 10 @@
+// 10
 if(keyPressedAdd){// 10y
 console.log('if 10: ','keyPressedAdd', keyPressedAdd);
+
+if(operator!==null && operand2===null){
+// notify operator duplicity
+notif.innerHTML=`Your last operator was on error.
+Your entries so far:  ${operand1} ${keyPressed}
+To continue, enter next number, or enter correct operator.`;
+alertColor.backgroundColor='darkgreen';
+}
+
 // call sub operandLoader.
 operandLoader();
 updDebug();
@@ -611,84 +598,157 @@ return;
 }
 }
 
-function infoCanister0(){
-//A:
-function equals (){
-performCalc();
-const preservedParameter3=finalResult;
-clear();
-finalResult=preservedParameter3;
-lcd.innerHTML=preservedParameter3;
-preservedParameter1=null;
-lastOpDispl.innerHTML='=';
-updDebug();
-return;
-}
-
-// B:
-function lookupUnary(keyPressed){
+function assertOperation(keyPressed){
+// Enable operator corresponding to the key that was pressed:
+// For unary operators 
 if(keyPressed ==='&#177'){
-return keyPressedChgSign=true;
+keyPressedChgSign=true;
+return keyPressedChgSign;
+
 }else if(keyPressed==='&#x232b'){
-return keyPressedBackspace=true;
+ keyPressedBackspace=true;
+ return keyPressedBackspace;
+ 
 }else if(keyPressed==='1/x'){
-return keyPressedInv=true;
+ keyPressedInv=true;
+ return keyPressedInv;
+
 }else if(keyPressed==='&#x221a;'){
-return keyPressedSqrt=true;
+keyPressedSqrt=true;
+return keyPressedSqrt;
+
 }else if(keyPressed==='x²'){
-return keyPressedSquare=true;
+keyPressedSquare=true;
+return keyPressedSquare;
+
+// For binary operators 
+
+}else if(keyPressed==='+'){
+keyPressedAdd=true;
+return keyPressedAdd;
+
+}else if(keyPressed==='-'){
+keyPressedSubstract=true;
+return keyPressedSubstract;
+
+}else if(keyPressed==='&#215;'){
+keyPressedMultiply=true;
+return keyPressedMultiply;
+
+}else if(keyPressed==='&#247;'){
+keyPressedDivide=true;
+return keyPressedDivide;
+
+}else if(keyPressed==='%'){
+keyPressedPercentage=true;
+return keyPressedPercentage;
+
 }else{
 // NOP
 }
-return;
-}
+return;}
 
-// C:
-function recycle (){
-if(keyPressed!=='='&& keyPressedUnary===false){
-operant1=finalResult;
-//keyPressed='+';
-operandLoader();
-operant2=null;
-lcd.innerHTML=null;
-finalResult=null;
-updDebug();
-//keyPressedUnary=false;
- // keyPressedAdd=true;
- // keyPressed='+';
-return;
-}else if(keyPressed!=='='&& keyPressedUnary){// @
-// Preserve values
-preservedParameter1=finalResult;
-preservedParameter2=keyPressed;
-// Clear whole calculator
-clear();
-// Restore values
-operant1=preservedParameter1;
-keyPressed=preservedParameter2;
-// Reset generic containers 
-preservedParameter1=null;
-preservedParameter2=null;
-// Preset environment
-console.log(`Environment:\nkeyPressedUnary: ${keyPressedUnary} keyPressedChgSign: ${keyPressedChgSign} lookupUnary(keyPressed): ${lookupUnary(keyPressed)}`);
-/*keyPressedUnary=true;
-keyPressedChgSign=true;*/
-lookupUnary(keyPressed);
-// Service unary request
+function switchCalcModes (){// @@@
+if(operand1===null && isNaN(keyPressed) && keyPressed!=='.'){
+alertColor.backgroundColor='darkgreen';
+ notif.innerHTML=`
+      🙂 Your first entry must be a number!`;
+ return;}
+  if(alertColor.backgroundColor==='darkred'){return}
+ alertColor.backgroundColor='transparent';
+ notif.innerHTML='';
+// Mode1: Entry of a unary or binary operator after final result (in other words, after pressing the equals key)
+if(operand1!==null && operand2!==null && finalResult!==null && isNaN(keyPressed)){
+// Preserve unary environment:
+// example:
+//  keyPressedUnary=true;
+//  keyPressedInv=true;
+//  keyPressed='1/x';
+
+// Preserve binary environment:
+// example:
+// keyPressedUnary=false;
+// keyPressedAdd=true;
+// keyPressed='+';
+
+const preservedKeyPressedUnary=keyPressedUnary;
+const preservedKeyPressed=keyPressed;
+
+// Enter recycle mode:
+recycle();
+
+// Restore environment:
+keyPressedUnary=preservedKeyPressedUnary;
+keyPressed=preservedKeyPressed;
+assertOperation(keyPressed);
+const assertedOperation=assertOperation(keyPressed);
+// Feed main() with restored environment:
+console.log(`Environment; keyPressedUnary: ${keyPressedUnary} assertedOperation: ${assertedOperation} keyPressed: ${keyPressed}`);
 main();
+return;
+}else if(operand1!==null && operand2!==null && finalResult===null &&!keyPressedUnary){
+// Mode2: After receiving the sequence: operand1, an operator, and opetand2, calc receives a binary operator. This signals an intention to complete current calculation, and use its result as the first number of next calculation whose operator will be the latest operator entered by the user. 
+console.log(`Initial Conditions; operand1: ${operand1} operand2: ${operand2} finalResult: ${finalResult} keyPressedUnary: ${keyPressedUnary}`);
+
+// preserve current binary operator and its environment
+// example:
+// keyPressedUnary=false;
+// ** keyPressedAdd=true;
+// keyPressed='+';
+const preservedKeyPressedUnary=keyPressedUnary;
+const preservedKeyPressed=keyPressed;
+
+// complete current calculation (like when pressing the equal sign)
+// Prepare equal sign environment:
+// Hereby the equals environment:
+keyPressedUnary=false;
+keyPressedEquals=true;
+keyPressed='=';
+  
+// Now call main() to complete the calculation
+main();
+// alert(`Initial Conditions; \noperand1: ${operand1} operand2: ${operand2} finalResult: ${finalResult} \nkeyPressedUnary: ${keyPressedUnary}`);
+
+// Use result as 1st number of next calculation and load the preserved operator
+// inject preserved operator and its environment, and process like there was a binary operator key Press.
+// To achieve this, restore original environment, and call switchCalcModes()
+
+// restoring original environment:
+keyPressedUnary=preservedKeyPressedUnary;
+keyPressed=preservedKeyPressed;
+assertOperation(keyPressed);
+const assertedOperation=assertOperation(keyPressed);
+// calling switchCalcModes()
+switchCalcModes();
+return;
+// Mode3: Entry of a number after final result (in other words, after pressing the equals ke. This signals an intention to start a whole new calculation. 
+}else if(operand1!==null && operand2!==null && finalResult!==null && !isNaN(keyPressed)){
+// Procedure: preserve the number, clear whole calculator, restore the number, and let switchCalcModes() handle it.
+
+// Preserve number environment:
+// example:
+// keyPressedUnary=true;
+// keyPressedNumber=true;
+// keyPressed=0;
+const preservedkeyPressedUnary=keyPressedUnary;
+const preservedkeyPressedNumber=keyPressedNumber;
+const preservedKeyPressed=keyPressed;
+
+// clear whole calculator
+clear();
+
+// Restore number and its environment
+keyPressedUnary=preservedkeyPressedUnary;
+keyPressedNumber=preservedkeyPressedNumber;
+keyPressed=preservedKeyPressed;
+
+// Process the number entry as usual
+switchCalcModes();
 return;
 }else{
-preservedParameter1=finalResult;
-clear();
-keyPressedUnary=true;
-keyPressedNumber=true;
-keyPressed=preservedParameter1;
 main();
-lastOpDispl.innerHTML='♽';
-preservedParameter1=null;
-return;
-} 
 }
+return;
 }
 
 //***** TEST *****
