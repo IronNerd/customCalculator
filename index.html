@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link rel="stylesheet" href="calc.css" type="text/css" media="all" />
+  <link rel="stylesheet" href="calcStyle.css" type="text/css" media="all" />
   <title>Simple Calculator</title>
 </head>
 <body>
@@ -35,7 +35,10 @@
     <input type="button" class="key" id="dotKey" value="&middot;">
     <input type="button" class="key" id="square" value="x²">
     <input type="button" class="key" id="sqrt" value="&#x221a;">
-    <input type="button" class="key" id="help" value="&#x3f;">
+    
+  <button class="key"><a href="help.html" id="help">&#x3f;</a></button>
+  
+    
     <input type="button" class="key" id="invert" value="1/x">
    <!-- x&#x207b;&#xb9; -->
     <input type="button" class="key" id="backspace" value="&#x232b;">
@@ -64,25 +67,9 @@
      <span id="sumAccDebug"></span>
     </p>
     
-    <!--   </p>
-    <p class="visual-top">
-     mainAcc:  
-     <span id="mainAccDebug"></span>
-    </p> -->
-  
-   </div>
+  </div>
  
-    <!--   <div class="top-clue" >
-    <p class="visual-top">
-    operand2: <span id="sumAccDebug"></span>
-   </p> -->
-
-    <!--    <p class="visual-top">
-    minusAcc: <span id="minusAccDebug"></span>
-   </p>    </div>-->
-
-
-  <!--  -->
+ <!--  -->
   
   <div class="top-clue" >
    <p class="visual-top">
@@ -91,30 +78,19 @@
  <p class="visual-top">
     RESULT: <span id="prcntAccDebug"></span></p>
  
-   </div>  
+ </div>  
   
   <!--  -->
-  
- 
-   
-    <!--   <div class="top-clue" >
-   <p class="visual-top">
-    operator: <span id="multAccDebug"></span>
-   </p> <p class="visual-top">
-    divAcc: <span id="divAccDebug"></span>
-   </p>  </div> -->
-   
   </div>
   
 <div id= "notification-area">
   <span id= "notification"></span>
 </div>
 
-  <!--  -->
-<input type="button" name="debug" id="test" value="&#x267d; TEST" />
+  <!-- <input type="button" name="debug" id="test" value="&#x267d; TEST" />
 <input type="button" name="debug2" id="test2" value="1/x" />
-<input type="button" name="debug2" id="test3" value="x²" />
+<input type="button" name="debug2" id="test3" value="x²" /> -->
 
-  <script type="text/javascript" charset="utf-8" src="calc.js"></script>
+  <script type="text/javascript" charset="utf-8" src="calcApp.js"></script>
 </body>
-</html>
+</html> 
