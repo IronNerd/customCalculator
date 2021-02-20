@@ -8,46 +8,45 @@
   <title>Simple Calculator</title>
 </head>
 <body>
-
-  <div id="lcd-frame">
-    <span id="lastOpDispl"></span>
-    <span id="lcd" value="">0</span>
-  </div>
+ <div id="lcd-frame">
+  <span id="lastOpDispl"></span>
+  <span id="lcd" value=""></span>
+ </div>
  
-  <div id="keys">
-    <input type="button" class="key" id="clear" value="C">
-    <input type="button" class="key" id="percentage" value="%">
-    <input type="button" class="key" id="change-sign" value="&#177;">
-    <input type="button" class="key" id="divide" value="&#247;">
-    <input type="button" class="key" id="key9" value="9">
-    <input type="button" class="key" id="key8" value="8">
-    <input type="button" class="key" id="key7" value="7">
-    <input type="button" class="key" id="multiply" value="&#215;">
-    <input type="button" class="key" id="key6" value="6">
-    <input type="button" class="key" id="key5" value="5">
-    <input type="button" class="key" id="key4" value="4">
-    <input type="button" class="key" id="minus" value="&#8722;">
-    <input type="button" class="key" id="key3" value="3">
-    <input type="button" class="key" id="key2" value="2">
-    <input type="button" class="key" id="key1" value="1">
-    <input type="button" class="key" id="sum" value="+">
-    <input type="button" class="key" id="key0" value="0">
-    <input type="button" class="key" id="dotKey" value="&middot;">
-    <input type="button" class="key" id="square" value="x²">
-    <input type="button" class="key" id="sqrt" value="&#x221a;">
-    
+ <div id="keys">
+  <input type="button" class="key" id="ms" value="MS">
+  <input type="button" class="key" id="mr" value="MR">
+  <input type="button" class="key" id="mc" value="MC">
+  <input type="button" class="key" id="format" value="&#x2704;">
+  <input type="button" class="key" id="clear" value="C">
+  <input type="button" class="key" id="percentage" value="%">
+  <input type="button" class="key" id="change-sign" value="&#177;">
+  <input type="button" class="key" id="divide" value="&#247;">
+  <input type="button" class="key" id="key9" value="9">
+  <input type="button" class="key" id="key8" value="8">
+  <input type="button" class="key" id="key7" value="7">
+  <input type="button" class="key" id="multiply" value="&#215;">
+  <input type="button" class="key" id="key6" value="6">
+  <input type="button" class="key" id="key5" value="5">
+  <input type="button" class="key" id="key4" value="4">
+  <input type="button" class="key" id="minus" value="&#8722;">
+  <input type="button" class="key" id="key3" value="3">
+  <input type="button" class="key" id="key2" value="2">
+  <input type="button" class="key" id="key1" value="1">
+  <input type="button" class="key" id="sum" value="+">
+  <input type="button" class="key" id="key0" value="0">
+  <input type="button" class="key" id="dotKey" value="&middot;">
+  <input type="button" class="key" id="square" value="x²">
+  <input type="button" class="key" id="sqrt" value="&#x221a;">
   <button class="key"><a href="help.html" id="help">&#x3f;</a></button>
-  
-    
-    <input type="button" class="key" id="invert" value="1/x">
+  <input type="button" class="key" id="invert" value="1/x">
    <!-- x&#x207b;&#xb9; -->
-    <input type="button" class="key" id="backspace" value="&#x232b;">
-    <input type="button" class="key" id="equal" value="=">
-  </div>
-  
-  <div id="debug">
-   
-  <div class="top-clue" >
+  <input type="button" class="key" id="backspace" value="&#x232b;">
+  <input type="button" class="key" id="equal" value="=">
+ </div>
+ 
+<div id="debug">
+ <div class="top-clue" >
     <p class="visual-top">
      lastOp:
      <span id="last-op-debug"></span>
@@ -56,8 +55,7 @@
      <span id="lcd-debug"></span>
     </p>
    </div>  
-    
-   <div class="top-clue" >
+ <div class="top-clue" >
     <p class="visual-top">
      operand1: 
      <span id="inpBufferDebug"></span>
@@ -66,31 +64,36 @@
      operand2:  
      <span id="sumAccDebug"></span>
     </p>
-    
-  </div>
- 
+   </div>
  <!--  -->
-  
-  <div class="top-clue" >
+ <div class="top-clue">
    <p class="visual-top">
     operator: <span id="multAccDebug"></span>
    </p>
- <p class="visual-top">
-    RESULT: <span id="prcntAccDebug"></span></p>
- 
- </div>  
-  
+   <p class="visual-top">
+    RESULT: <span id="prcntAccDebug"></span>
+   </p>
+  </div>  
   <!--  -->
+ <div class="top-clue">
+   <p class="visual-top">
+  subTot: <span id="sub-tot"></span>
+   </p>
+   <p class="visual-top">
+    Mem: <span id="lcd-to-view-memory"></span>
+   </p>
   </div>
-  
+</div>
+
 <div id= "notification-area">
-  <span id= "notification"></span>
+ <span id= "notification"></span>
 </div>
 
   <!-- <input type="button" name="debug" id="test" value="&#x267d; TEST" />
 <input type="button" name="debug2" id="test2" value="1/x" />
 <input type="button" name="debug2" id="test3" value="x²" /> -->
 
-  <script type="text/javascript" charset="utf-8" src="calcApp.js"></script>
+ <script type="text/javascript" charset="utf-8" src="calcApp.js"></script>
 </body>
-</html> 
+</html>
+
