@@ -5,45 +5,95 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="stylesheet" href="calcStyle.css" type="text/css" media="all" />
-  <title>Easy Calc Help</title>
+  <title>Simple Calculator</title>
 </head>
-<body id="help-page">
-  <a href="index.html" id="test">Back to Calc App</a>
-<ol>
-<li>Features already implemented:</li>
-<li>Mode1:
-Entry of a unary or binary operator after final result (in other words, after pressing the equals key).</li>
-<li>Mode2:
-After receiving the sequence operand1, operator, and opetand2, calc receives a binary operator.This signals an intention to complete current calculation, and use its result as the first number of next calculation, whose operator will be the latest operator entered by the user.</li>
-<li>Mode3:
-Entry of a number after final result (in other words, after pressing the equals key). This signals an intention to start a whole new calculation. Nk need to press the clear key to start a new calculation.</li>
-<li>Complete clear function at any point in time.</li>
-<li>A dedicated button to change sign +/-.
-</li>
-<li>Integer and decimal numbers input.</li>
-<li>Backspace for any number being input at any point in time</li>
-<li>Change sign for any input number at any point in time</li>
-<li>+, -, x, /, % for any mixture of positive and negative numbers</li>
-<li>After pressing '=' to obtain final result, no need to clear. Just enter first number to start next calc.</li>
-<li>Divide by zero is not allowed.
-</li>
-<li>No action upon consecutive and repeated operators, but: Notification of, and solution, to consecutive and repeated operators.</li>
-<li>After obtaining a final result, press any operator key to use that result as first operand of next calculation.</li>
-<li>After pressing '=', optionally press "=" again to enter &#x267d; recycle mode. This permits editing resulting number. Change sign, backspace digits, and add digits. Press next operator to exit recycle mode and use edited number as the first number of next calculation. If you do not press "=" twice, you may use the result as is as the first number of next calculation. You may also just enter a new number altogether for the next calculation. No need to press "Clear"</li>
-<li>Continuous display of last operator that was entered.</li>
-<li>Notification area to inform users about erroneous key presses.</li>
-<li>Error messages. </li>
-<li>Multiple operations before pressing '=' key.</li>
-<li>NEXT:</li>
-<li>Memorize number on display and recall for subsequent operations</li>
-<li>preserve state of the calculator at quit time, and restore state when restarting the calculator</li>
-<li>Toggle operations (to correct mistaken entries of operations)</li>
-<li>highlighted the key of the last operator key that was entered</li>
-<li>Visibility of the sequence of all numbers and operator keys for the current calculation</li>
-<li>calc history visibility of the sequence of all numbers and operator keys for the last 5 calculation</li>
-<li>Paste into the calculator any number cut or copied from any other app</li>
-<li>share a number from any other app to the calculator</li>
-<li>copy results from the calculator to paste somewhere else</li>
-</ol>
+<body>
+ <div id="lcd-frame">
+  <span id="lastOpDispl"></span>
+  <span id="lcd" value=""></span>
+ </div>
+ 
+ <div id="keys">
+  <input type="button" class="key" id="ms" value="MS">
+  <input type="button" class="key" id="mr" value="MR">
+  <input type="button" class="key" id="mc" value="MC">
+  <input type="button" class="key" id="format" value="&#x2704;">
+  <input type="button" class="key" id="clear" value="C">
+  <input type="button" class="key" id="percentage" value="%">
+  <input type="button" class="key" id="change-sign" value="&#177;">
+  <input type="button" class="key" id="divide" value="&#247;">
+  <input type="button" class="key" id="key9" value="9">
+  <input type="button" class="key" id="key8" value="8">
+  <input type="button" class="key" id="key7" value="7">
+  <input type="button" class="key" id="multiply" value="&#215;">
+  <input type="button" class="key" id="key6" value="6">
+  <input type="button" class="key" id="key5" value="5">
+  <input type="button" class="key" id="key4" value="4">
+  <input type="button" class="key" id="minus" value="&#8722;">
+  <input type="button" class="key" id="key3" value="3">
+  <input type="button" class="key" id="key2" value="2">
+  <input type="button" class="key" id="key1" value="1">
+  <input type="button" class="key" id="sum" value="+">
+  <input type="button" class="key" id="key0" value="0">
+  <input type="button" class="key" id="dotKey" value="&middot;">
+  <input type="button" class="key" id="square" value="x²">
+  <input type="button" class="key" id="sqrt" value="&#x221a;">
+  <button class="key"><a href="help.html" id="help">&#x3f;</a></button>
+  <input type="button" class="key" id="invert" value="1/x">
+   <!-- x&#x207b;&#xb9; -->
+  <input type="button" class="key" id="backspace" value="&#x232b;">
+  <input type="button" class="key" id="equal" value="=">
+ </div>
+ 
+<div id="debug">
+ <div class="top-clue" >
+    <p class="visual-top">
+     lastOp:
+     <span id="last-op-debug"></span>
+    <p class="visual-top">
+     LCD: 
+     <span id="lcd-debug"></span>
+    </p>
+   </div>  
+ <div class="top-clue" >
+    <p class="visual-top">
+     operand1: 
+     <span id="inpBufferDebug"></span>
+    </p>
+    <p class="visual-top">
+     operand2:  
+     <span id="sumAccDebug"></span>
+    </p>
+   </div>
+ <!--  -->
+ <div class="top-clue">
+   <p class="visual-top">
+    operator: <span id="multAccDebug"></span>
+   </p>
+   <p class="visual-top">
+    RESULT: <span id="prcntAccDebug"></span>
+   </p>
+  </div>  
+  <!--  -->
+ <div class="top-clue">
+   <p class="visual-top">
+  subTot: <span id="sub-tot"></span>
+   </p>
+   <p class="visual-top">
+    Mem: <span id="lcd-to-view-memory"></span>
+   </p>
+  </div>
+</div>
+
+<div id= "notification-area">
+ <span id= "notification"></span>
+</div>
+
+  <!-- <input type="button" name="debug" id="test" value="&#x267d; TEST" />
+<input type="button" name="debug2" id="test2" value="1/x" />
+<input type="button" name="debug2" id="test3" value="x²" /> -->
+
+ <script type="text/javascript" charset="utf-8" src="calcApp.js"></script>
 </body>
 </html>
+
